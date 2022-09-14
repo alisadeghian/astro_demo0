@@ -1,0 +1,31 @@
+run: branch 
+obj_path: data/source_meshes/person.obj 
+output_dir: results/demo/roman_resnet 
+prompt: ["a 3D rendering of a Roman soldier", "a legionary wearing armor"] 
+sigma: [12.0, 5.0, 1.0]  
+clamp: tanh 
+n_normaugs: 4 
+n_augs: 1 
+normmincrop: 0.1 
+normmaxcrop: 0.4 
+geoloss: True 
+colordepth: 2 
+normdepth: 2 
+frontview: True 
+frontview_std: [4, 100] 
+clipavg: view 
+lr_decay: 0.9 
+normclamp: tanh 
+maxcrop: 1.0 
+save_render: True 
+seed: [29, 1821, 3661] 
+n_iter: 2000 
+learning_rate: 0.0005 
+normal_learning_rate: 0.0005 
+standardize: [True, False] 
+no_pe: True 
+symmetry: True 
+background: 1 1 1
+
+
+

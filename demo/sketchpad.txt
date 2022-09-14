@@ -1,0 +1,9 @@
+CUDA_VISIBLE_DEVICES=1 wandb agent reza_armand/human_demo/nk4hezxk
+CUDA_VISIBLE_DEVICES=2 wandb agent reza_armand/human_demo/nk4hezxk
+CUDA_VISIBLE_DEVICES=3 wandb agent reza_armand/human_demo/nk4hezxk
+
+CUDA_VISIBLE_DEVICES=1 python main.py --background_based_prompt=0 --camera_r=1 --clipavg=view --coeff_models_deviate=0.3 --colordepth=2 --depth=8 --divers_batch_aug=0 \
+--frontview_elev_std=6 --frontview_std=4 --geoloss=0 --learning_rate=0.0002 --log_interval=50 --lr_decay=0.9 --maxcrop=1 --mesh_normalizer_func=min_max \
+--model_name=RN50x4:0,ViT-B/32:0 --n_augs=1 --n_iter=350 --n_normaugs=4 --n_views=8 --neural_style_field=BACON --normdepth=2 --normmaxcrop=0.4 \
+--normmincrop=0.1 --normratio=0.002 --obj_path=data/source_meshes/person.obj --output_dir=results/demo/person/output --pe=0 \
+"--prompt=xxx" --seed=2021 --sigma=256 --standardize=0 --symmetry=1 --width=256

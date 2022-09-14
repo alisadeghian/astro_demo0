@@ -1,0 +1,134 @@
+
+program: main.py
+name: BACON_sweep_snoop
+project: NSF_BACON_sweep_snoop
+description: comparing NSF vs BACON on snoop dogg
+method: grid #random
+early_terminate: 
+  type: hyperband
+  min_iter: 600
+metric:
+  name: eval_clip_loss2_view
+  goal: minimize
+parameters:
+  obj_path: 
+    value: data/source_meshes/person.obj
+  prompt: 
+    values:  ["a 3D rendering of Snoop Dogg wearing a hoodie.", "Snoop Dogg wearing a jacket."]
+  output_dir: 
+    value: results/demo/person/output
+  n_iter: 
+    value: 1200
+  n_augs:
+    value: 1
+  n_normaugs:
+    value: 4
+  clipavg: 
+    value: 'view'
+  geoloss: 
+    values: [0]
+  lr_decay: 
+    values: [0.95]
+  learning_rate:
+    values: [0.0005]
+  normratio:
+    values: [0.025, 0.005] # different for NSF/BACON
+  seed:
+    values: [2022, 1990]
+  pe: 
+    value: 0
+  frontview_std: 
+    values: [4.0]
+  frontview_elev_std: 
+    values: [5.0]
+  normmincrop:
+    value: 0.1
+  normmaxcrop: 
+    value: 0.4
+  standardize: 
+    value: 0
+  model_name:
+    values: ['RN50', 'ViT-B/32']
+  divers_batch_aug:
+    values: [1]
+  symmetry:
+    value: 1
+  maxcrop:
+    value: 1.0
+  normdepth:
+    values: [2]
+  colordepth:
+    values: [2]
+  camera_r:
+    value: 1.0
+  mesh_normalizer_func:
+    value: 'min_max'
+  neural_style_field:
+    values: [BACON] # different for NSF/BACON
+  depth:
+    values: [4]
+  width:
+    values: [256]
+  sigma:
+    values: [224, 56] # different for NSF/BACON
+  n_views:
+    values: [5] 
+  background_image_mode:
+    values: ['change_per_iter']
+
+data/brute_force_no_culling_rotated/house1_26e21105284c8397d083985b1135cf9d.obj
+data/brute_force_no_culling_rotated/house2_96c03d4e8668d436fcefa74f1d0bc6e6.obj
+
+    CUDA_VISIBLE_DEVICES=0 python main.py --background_based_prompt=0 --background_image_mode=change_per_iter --camera_r=1.3 \
+    --clipavg=view --coeff_models_deviate=0.3 --colordepth=2 --depth=8 --divers_batch_aug=0 --frontview_elev_std=30 --frontview_std=4 \
+    --geoloss=0 --learning_rate=0.0005 --log_interval=100 --lr_decay=0.85 --maxcrop=1 --mesh_normalizer_func=min_max --model_name=ViT-B/32:0,RN50x16:0 \
+    --n_augs=1 --n_iter=400 --n_normaugs=4 --n_views=5 --neural_style_field=BACON --normdepth=2 --normmaxcrop=0.4 --normmincrop=0.1 --normratio=0.1 \
+    --obj_path=data/brute_force_no_culling_rotated/house1_26e21105284c8397d083985b1135cf9d.obj \
+    --output_dir=obj_factory/house/outputs --seed=1990 --sigma=224 --standardize=0 --symmetry=1 --width=384 --frontview_center 1.57 0.1 \
+    --prompt="A 3D rendering of a The White House, unreal engine." --wandb_proj_name=house_test
+
+
+    CUDA_VISIBLE_DEVICES=1 python main.py --background_based_prompt=0 --background_image_mode=change_per_iter --camera_r=1.3 \
+    --clipavg=view --coeff_models_deviate=0.3 --colordepth=2 --depth=8 --divers_batch_aug=0 --frontview_elev_std=30 --frontview_std=4 \
+    --geoloss=0 --learning_rate=0.0005 --log_interval=100 --lr_decay=0.85 --maxcrop=1 --mesh_normalizer_func=min_max --model_name=ViT-B/32:0,RN50x16:0 \
+    --n_augs=1 --n_iter=400 --n_normaugs=4 --n_views=5 --neural_style_field=BACON --normdepth=2 --normmaxcrop=0.4 --normmincrop=0.1 --normratio=0.1 \
+    --obj_path=data/brute_force_no_culling_rotated/house1_26e21105284c8397d083985b1135cf9d.obj \
+    --output_dir=obj_factory/house/outputs --seed=1990 --sigma=224 --standardize=0 --symmetry=1 --width=384 --frontview_center 1.57 0.1 \
+    --prompt="The White House." --wandb_proj_name=house_test
+
+
+    CUDA_VISIBLE_DEVICES=2 python main.py --background_based_prompt=0 --background_image_mode=change_per_iter --camera_r=1.3 \
+    --clipavg=view --coeff_models_deviate=0.3 --colordepth=2 --depth=8 --divers_batch_aug=0 --frontview_elev_std=30 --frontview_std=4 \
+    --geoloss=0 --learning_rate=0.0005 --log_interval=100 --lr_decay=0.85 --maxcrop=1 --mesh_normalizer_func=min_max --model_name=ViT-B/32:0,RN50x16:0 \
+    --n_augs=1 --n_iter=400 --n_normaugs=4 --n_views=5 --neural_style_field=BACON --normdepth=2 --normmaxcrop=0.4 --normmincrop=0.1 --normratio=0.1 \
+    --obj_path=data/brute_force_no_culling_rotated/house1_26e21105284c8397d083985b1135cf9d.obj \
+    --output_dir=obj_factory/house/outputs --seed=1990 --sigma=224 --standardize=0 --symmetry=1 --width=384 --frontview_center 1.57 0.1 \
+    --prompt="A 3D rendering of a The White House." --wandb_proj_name=house_test
+
+    CUDA_VISIBLE_DEVICES=3 python main.py --background_based_prompt=0 --background_image_mode=change_per_iter --camera_r=1.3 \
+    --clipavg=view --coeff_models_deviate=0.3 --colordepth=2 --depth=8 --divers_batch_aug=0 --frontview_elev_std=30 --frontview_std=4 \
+    --geoloss=0 --learning_rate=0.0005 --log_interval=100 --lr_decay=0.85 --maxcrop=1 --mesh_normalizer_func=min_max --model_name=ViT-B/32:0,RN50x16:0 \
+    --n_augs=1 --n_iter=400 --n_normaugs=4 --n_views=5 --neural_style_field=BACON --normdepth=2 --normmaxcrop=0.4 --normmincrop=0.1 --normratio=0.1 \
+    --obj_path=data/brute_force_no_culling_rotated/house1_26e21105284c8397d083985b1135cf9d.obj \
+    --output_dir=obj_factory/house/outputs --seed=1990 --sigma=224 --standardize=0 --symmetry=1 --width=384 --frontview_center 1.57 0.1 \
+    --prompt="A White House replica." --wandb_proj_name=house_test
+
+
+
+
+    CUDA_VISIBLE_DEVICES=0,1,2 python main.py --background_based_prompt=0 --background_image_mode=change_per_iter --camera_r=1.3 \
+    --clipavg=view --coeff_models_deviate=0.3 --colordepth=4 --depth=16 --divers_batch_aug=0 --frontview_elev_std=30 --frontview_std=4 \
+    --geoloss=0 --learning_rate=0.0005 --log_interval=100 --lr_decay=0.85 --maxcrop=1 --mesh_normalizer_func=min_max --model_name=RN50x16:0,ViT-L/14@336px:2,RN50x64:1 \
+    --n_augs=1 --n_iter=400 --n_normaugs=4 --n_views=5 --neural_style_field=BACON --normdepth=4 --normmaxcrop=0.4 --normmincrop=0.1 --normratio=0.04 \
+    --obj_path=data/source_meshes/person.obj \
+    --output_dir=obj_factory/house/outputs --seed=1990 --sigma=512 --standardize=0 --symmetry=1 --width=1024 --frontview_center 1.57 0.1 \
+    --prompt="The Iron Man." --wandb_proj_name=house_test
+
+
+    CUDA_VISIBLE_DEVICES=1 python main.py --background_based_prompt=0 --background_image_mode=change_per_iter --camera_r=1.3 \
+    --clipavg=view --coeff_models_deviate=0.2 --colordepth=4 --depth=16 --divers_batch_aug=0 --frontview_elev_std=30 --frontview_std=4 \
+    --geoloss=0 --learning_rate=0.0005 --log_interval=100 --lr_decay=0.85 --maxcrop=1 --mesh_normalizer_func=min_max --model_name=ViT-L/14@336px:1,RN50x64:2 \
+    --n_augs=1 --n_iter=400 --n_normaugs=4 --n_views=5 --neural_style_field=BACON --normdepth=4 --normmaxcrop=0.4 --normmincrop=0.1 --normratio=0.04 \
+    --obj_path=data/brute_force_no_culling_rotated/house2_96c03d4e8668d436fcefa74f1d0bc6e6.obj \
+    --output_dir=obj_factory/house/outputs --seed=1990 --sigma=512 --standardize=0 --symmetry=1 --width=1024 --frontview_center 1.57 0.1 \
+    --prompt="The White House." --wandb_proj_name=house_test

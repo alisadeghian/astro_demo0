@@ -1,0 +1,95 @@
+program: main.py
+name: rose_factory_sweep0
+project: rose_factory
+description: Generating roses using normal-BACON and ensembel CLIP
+method: grid #random
+# early_terminate: 
+#   type: hyperband
+#   min_iter: 150
+metric:
+  name: eval_clip_loss2_view
+  goal: minimize
+parameters:
+  obj_path: 
+    values: [data/brute_force_no_culling_rotated/rose1_5e731c84e9fd361955ec341d6ab59fc7.obj,
+             data/brute_force_no_culling_rotated/rose2_7a7c58beeec719191dd5fe17c881c88.obj,
+             data/brute_force_no_culling_rotated/rose3_2872c4b8e2f86201b7d0f3d89bbac230.obj]
+  prompt: 
+    values: ["A 3D rendering of a red rose in Unreal Engine.", "A 3D rendering of a rose in Unreal Engine.", "Red rose", "Rose", "Flower", "Colorful flower", "Pink rose"] ### HIGHLY ENCOURAGE TO ALWAYS ADD IN UNREAL ENGINE.
+  output_dir: 
+    value: obj_factory/roses/outputs
+  n_iter: 
+    value: 400
+  n_augs:
+    value: 1
+  n_normaugs:
+    value: 4
+  clipavg: 
+    value: 'view'
+  geoloss: 
+    values: [0]
+  lr_decay: 
+    values: [0.8]
+  learning_rate:
+    values: [0.0005]
+  normratio:
+    values: [0.003]
+  seed:
+    values: [2022, 1990]
+  pe: 
+    value: 0
+  frontview_std: 
+    values: [1.0, 4.0, 10.0]
+  frontview_elev_std: 
+    values: [1.0, 10.0]
+  normmincrop:
+    value: 0.1
+  normmaxcrop: 
+    values: [0.4]
+  standardize: 
+    value: 0
+  model_name:
+    values: ['ViT-B/32:0,RN50x16:0']
+  coeff_models_deviate:
+    values: [0.25]
+  divers_batch_aug:
+    values: [0]
+  symmetry:
+    value: 1
+  maxcrop:
+    value: 1.0
+  normdepth:
+    values: [2]
+  colordepth:
+    values: [2]
+  camera_r:
+    values: [1, 1.5]
+  mesh_normalizer_func:
+    value: 'min_max'
+  neural_style_field:
+    values: [BACON]
+  depth:
+    values: [8]
+  width:
+    values: [384]
+  sigma:
+    values: [224] # 384/2 + 8 = 200
+  n_views:
+    values: [6] 
+  background_image_mode:
+    values: ['change_per_iter']
+  background_based_prompt:
+    values: [0]
+  # renderer_shape:
+  #   values: [384]
+  log_interval:
+    value: 100
+
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - ${args}
+  - --frontview_center
+  - 1.57
+  - 0.1

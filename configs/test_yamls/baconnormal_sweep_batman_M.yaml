@@ -1,0 +1,367 @@
+
+program: main.py
+name: baconnormal_batman_Mfactory
+project: baconnormal_batman_Mfactory
+description: Generating Batman using normal-BACON and medium CLIP
+method: grid #random
+early_terminate: 
+  type: hyperband
+  min_iter: 600
+metric:
+  name: eval_clip_loss2_view
+  goal: minimize
+parameters:
+  obj_path: 
+    value: data/source_meshes/person.obj
+  prompt: 
+    values:  ["A realistic 3D rendering of Batman.", "A realistic photo of Batman.", 
+              "A realistic 3D rendering of Batman standing.", "A realistic photo of Batman standing.", 
+              "A realistic 3D rendering of Batman walking.", "A realistic photo of Batman walking.",
+              "A realistic 3D rendering of Batman wearing his Batsuit.", "A realistic photo of Batman wearing his Batsuit.", 
+              "A 3D rendering of Batman standing in the dark.", "A photo of Batman standing in the dark",
+              "A 3D rendering of a man wearing Batman costume.", "A cool photo of a man wearing Batman costume.", 
+              "A man wearing Batman costume.", "A man posing with a Batman costume."]
+  output_dir: 
+    value: results/demo/person/output
+  n_iter: 
+    value: 1200
+  n_augs:
+    value: 1
+  n_normaugs:
+    value: 4
+  clipavg: 
+    value: 'view'
+  geoloss: 
+    values: [0]
+  lr_decay: 
+    values: [0.90]
+  learning_rate:
+    values: [0.0005]
+  normratio:
+    values: [0.02, 0.005]
+  seed:
+    values: [2022, 1990, 1991]
+  pe: 
+    value: 0
+  frontview_std: 
+    values: [50.0, 4.0]
+  frontview_elev_std: 
+    values: [2.0]
+  normmincrop:
+    value: 0.1
+  normmaxcrop: 
+    value: 0.4
+  standardize: 
+    value: 0
+  model_name:
+    values: ['RN50x4']
+  divers_batch_aug:
+    values: [0]
+  symmetry:
+    value: 1
+  maxcrop:
+    value: 1.0
+  normdepth:
+    values: [2]
+  colordepth:
+    values: [2]
+  camera_r:
+    value: 1.0
+  mesh_normalizer_func:
+    value: 'min_max'
+  neural_style_field:
+    values: [BACON]
+  depth:
+    values: [6]
+  width:
+    values: [256]
+  sigma:
+    values: [150] # 288/2 + 6 = 150
+  n_views:
+    values: [16] # 10 significantly improves the performance of the model.
+  background_image_mode:
+    values: ['change_per_iter']
+
+
+# Increase n_views to 16? (10 is 29493MiB memory)
+# Use smaller CLIP? 'RN50x4'
+
+
+
+CUDA_VISIBLE_DEVICES=0 python main.py --pe 0 --learning_rate=0.0005 --seed 123 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 4 --clipavg view --lr_decay 0.9 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person.obj --output_dir results/demo/people/ninja --prompt "a 3D rendering of a ninja in unreal engine." \
+--sigma 200.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.005 --camera_r=1.0 --depth=8 --n_iter=600 --geoloss 0 \
+--model_name=RN50x16:0,ViT-B/16:0
+
+CUDA_VISIBLE_DEVICES=2 python main.py --pe 0 --learning_rate=0.0005 --seed 123 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 4 --clipavg view --lr_decay 0.9 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person.obj --output_dir results/demo/people/ninja --prompt "a 3D rendering of a ninja in unreal engine." \
+--sigma 200.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.005 --camera_r=1.0 --depth=8 --n_iter=600 --geoloss 0 \
+--model_name=RN50x16:0,ViT-B/16:0 --symmetry=1
+
+
+
+CUDA_VISIBLE_DEVICES=1 python main.py --pe 0 --learning_rate=0.0005 --seed 123 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 4 --clipavg view --lr_decay 0.9 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person.obj --output_dir results/demo/people/ninja --prompt "a 3D rendering of a ninja in unreal engine." \
+--sigma 200.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.005 --camera_r=1.0 --depth=8 --n_iter=600 --geoloss 0 \
+--model_name=RN50:0,RN101:0,RN50x4:0,ViT-B/32:0
+
+
+CUDA_VISIBLE_DEVICES=3 python main.py --pe 0 --learning_rate=0.0005 --seed 123 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 4 --clipavg view --lr_decay 0.9 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person.obj --output_dir results/demo/people/ninja --prompt "a 3D rendering of Jennifer Aniston in unreal engine." \
+--sigma 200.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.005 --camera_r=1.0 --depth=8 --n_iter=600 --geoloss 0 \
+--model_name=RN101:0,RN50x4:0,ViT-B/32:0 --symmetry=1 --background_image_mode=change_per_iter
+
+======= OBAMA HEAD
+
+# CUDA_VISIBLE_DEVICES=2,3 python main.py --pe 0 --learning_rate=0.0005 --seed 29 \
+# --clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 8 --clipavg view --lr_decay 0.9 \
+# --colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 \
+# --clamp tanh --n_normaugs 4 --n_augs 1 \
+# --obj_path data/source_meshes/person_headv2.obj --output_dir results/demo/people/ninja --prompt "A realistic 3D rendering of Barak Obama in unreal engine." \
+# --sigma 192.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.01 --camera_r=1.7 --depth=8 --n_iter=600 --geoloss 1 \
+# --model_name=RN50x16:0,RN50:0,RN50x4:1,RN101:1,ViT-B/32:1 --symmetry=0 --background_image_mode=change_per_iter --frontview_elev_std=6 \
+# --renderer_shape=512 \
+
+# Sigma 112 vs 192 didn't make a difference. (192 slightly better)
+# normratio 0.02 also holds well
+
+# normratio 0.02
+CUDA_VISIBLE_DEVICES=1 python main.py --learning_rate=0.0005 --seed 29 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 4 --clipavg view --lr_decay 0.5 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/hat1_90c6bffdc81cedbeb80102c6e0a7618a.obj --output_dir results/demo/people/ninja --prompt "A 3D rendering of golden cap in unreal engine." \
+--sigma 192.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.02 --camera_r=1.4 --depth=6 --n_iter=300 --geoloss 1 \
+--model_name=RN50:0,RN101:0,ViT-B/32:0 --symmetry=0 --background_image_mode=change_per_iter --frontview_elev_std=1 
+
+# increase renderer_shape to 1024
+CUDA_VISIBLE_DEVICES=2,3 python main.py --pe 0 --learning_rate=0.0005 --seed 29 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 8 --clipavg view --lr_decay 0.5 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person_headv3hq.obj --output_dir results/demo/people/ninja --prompt "A realistic 3D rendering of Barak Obama in unreal engine." \
+--sigma 192.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.01 --camera_r=1.7 --depth=8 --n_iter=300 --geoloss 1 \
+--model_name=RN50x16:0,RN50:1,RN50x4:1,RN101:1,ViT-B/32:1 --symmetry=0 --background_image_mode=change_per_iter --frontview_elev_std=6 \
+--renderer_shape=1024
+
+#camera_r down to 1.5
+
+###########
+
+CUDA_VISIBLE_DEVICES=0 python main.py --learning_rate=0.0005 --seed 29 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 8 --clipavg view --lr_decay 0.8 \
+--colordepth 4 --normdepth 4 --normmincrop 0.2 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person_headv3hq.obj --output_dir results/demo/people/ninja --prompt "A realistic 3D rendering of Albert Einstein's face in unreal engine." \
+--sigma 256.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.05 --camera_r=1.35 --depth=8 --n_iter=300 --geoloss 1 \
+--model_name=RN50x4:0,RN101:0,RN50:0,ViT-B/32:0 --symmetry=0 --background_image_mode=change_per_iter --frontview_elev_std=6 \
+--width=1024 --n_views=5 --renderer_shape=512 --background_based_prompt=1
+
+
+CUDA_VISIBLE_DEVICES=1 python main.py --learning_rate=0.00025 --seed 29 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 8 --clipavg view --lr_decay 0.8 \
+--colordepth 4 --normdepth 4 --normmincrop 0.2 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person_headv3hq.obj --output_dir results/demo/people/ninja --prompt "A realistic 3D rendering of Albert Einstein's face in unreal engine." \
+--sigma 512.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.1 --camera_r=1.35 --depth=8 --n_iter=300 --geoloss 1 \
+--model_name=RN50x4:0,RN101:0,RN50:0,ViT-B/32:0 --symmetry=0 --background_image_mode=change_per_iter --frontview_elev_std=4 \
+--width=1024 --n_views=5 --renderer_shape=512 --background_based_prompt=1
+
+
+CUDA_VISIBLE_DEVICES=2 python main.py --learning_rate=0.00025 --seed 29 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 8 --clipavg view --lr_decay 0.8 \
+--colordepth 2 --normdepth 2 --normmincrop 0.2 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person_headv3hq.obj --output_dir results/demo/people/ninja --prompt "A realistic 3D rendering of Albert Einstein's face in unreal engine." \
+--sigma 512.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.1 --camera_r=1.35 --depth=8 --n_iter=300 --geoloss 1 \
+--model_name=RN50x4:0,RN101:0,RN50:0,ViT-B/32:0 --symmetry=0 --background_image_mode=change_per_iter --frontview_elev_std=4 \
+--width=1024 --n_views=5 --renderer_shape=512 --background_based_prompt=1
+
+
+CUDA_VISIBLE_DEVICES=3 python main.py --learning_rate=0.0005 --seed 29 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 8 --clipavg view --lr_decay 0.8 \
+--colordepth 2 --normdepth 2 --normmincrop 0.2 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person_headv3hq.obj --output_dir results/demo/people/ninja --prompt "A realistic 3D rendering of Albert Einstein's face in unreal engine." \
+--sigma 350.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.2 --camera_r=1.35 --depth=8 --n_iter=300 --geoloss 1 \
+--model_name=RN50x4:0,RN101:0,RN50:0,ViT-B/32:0 --symmetry=0 --background_image_mode=change_per_iter --frontview_elev_std=6 \
+--width=1024 --n_views=5 --renderer_shape=512 --background_based_prompt=1
+
+
+
+
+
+
+======= OBAMA HEAD NSF
+
+CUDA_VISIBLE_DEVICES=0,1 python main.py --pe 0 --standardize=1 --learning_rate=0.0005 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 8 --clipavg view --lr_decay 0.9 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 --geoloss 0 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person_headv2.obj --output_dir results/demo/people/head --prompt "A realistic photo of Barak Obama's head." --sigma 12.0 \
+--seed=29 --n_iter=1500 --normratio=0.025 --model_name=RN50x16:0,RN50x4:1,RN101:1
+
+
+=========================================================================================
+
+CUDA_VISIBLE_DEVICES=2,3 python main.py --pe 0 --learning_rate=0.0005 --seed 29 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 4 --clipavg view --lr_decay 0.9 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person.obj --output_dir results/demo/people/ninja --prompt "a 3D rendering of Barak Obama in unreal engine." \
+--sigma 224.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.005 --camera_r=1.0 --depth=8 --n_iter=600 --geoloss 0 \
+--model_name=RN50:0,RN101:0,RN50x4:0,ViT-B/32:0,RN50x16:1 --symmetry=1 --prompt_based_background=1 --random_background=1 \
+--renderer_shape=512
+
+
+
+====== obama
+
+CUDA_VISIBLE_DEVICES=2 python main.py --pe 0 --learning_rate=0.0005 --seed 123 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 4 --clipavg view --lr_decay 0.9 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person.obj --output_dir results/demo/people/ninja --prompt "a 3D rendering of Barak Obama in unreal engine." \
+--sigma 200.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.003 --camera_r=1.0 --depth=8 --n_iter=600 --geoloss 0 \
+--model_name=RN101:0,RN50x4:0,ViT-B/32:0 --symmetry=1 --background_image_mode=change_per_iter 
+
+CUDA_VISIBLE_DEVICES=1 python main.py --pe 0 --learning_rate=0.0005 --seed 29 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 4 --clipavg view --lr_decay 0.9 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person.obj --output_dir results/demo/people/ninja --prompt "a 3D rendering of Barak Obama in unreal engine." \
+--sigma 224.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.003 --camera_r=1.0 --depth=8 --n_iter=600 --geoloss 0 \
+--model_name=RN101:0,RN50x4:0,ViT-B/32:0 --symmetry=1 --prompt_based_background=1 --random_background=1 \
+--renderer_shape=500
+
+======
+======
+
+CUDA_VISIBLE_DEVICES=2 python main.py --pe 0 --learning_rate=0.0005 --seed 123 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 4 --clipavg view --lr_decay 0.9 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person.obj --output_dir results/demo/people/ninja --prompt "a 3D rendering of Iron Man wearing Iron Man helmet in unreal engine." \
+--sigma 200.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.003 --camera_r=1.0 --depth=8 --n_iter=600 --geoloss 0 \
+--model_name=RN101:0,RN50x4:0,ViT-B/32:0 --symmetry=1 --background_image_mode=change_per_iter 
+
+CUDA_VISIBLE_DEVICES=3 python main.py --pe 0 --learning_rate=0.0005 --seed 123 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 4 --clipavg view --lr_decay 0.9 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person.obj --output_dir results/demo/people/ninja --prompt "a 3D rendering of Iron Man wearing Iron Man helmet in unreal engine." \
+--sigma 200.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.003 --camera_r=1.0 --depth=8 --n_iter=600 --geoloss 0 \
+--model_name=RN101:0,RN50x4:0,ViT-B/32:0 --symmetry=1 --prompt_based_background=1 --random_background=1
+
+=====
+
+CUDA_VISIBLE_DEVICES=0 python main.py --pe 0 --learning_rate=0.0005 --seed 123 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 4 --clipavg view --lr_decay 0.9 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person.obj --output_dir results/demo/people/ninja --prompt "a 3D rendering of Iron Man in unreal engine." \
+--sigma 200.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.003 --camera_r=1.0 --depth=8 --n_iter=600 --geoloss 0 \
+--model_name=RN101:0,RN50x4:0,ViT-B/32:0 --symmetry=1
+
+
+
+
+
+
+
+
+# ninja nsf
+CUDA_VISIBLE_DEVICES=1 python main.py --pe 0 --standardize=1 --learning_rate=0.0005 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 4 --clipavg view --lr_decay 0.9 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 --geoloss 1 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person.obj --output_dir results/demo/people/ninja --prompt "a 3D rendering of a ninja in unreal engine" --sigma 12.0 \
+--seed=123 --n_iter=1500 --normratio=0.1
+
+
+CUDA_VISIBLE_DEVICES=0 python main.py --pe 0 --standardize=1 --learning_rate=0.0005 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 4 --clipavg view --lr_decay 0.9 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 --geoloss 1 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person.obj --output_dir results/demo/people/ninja --prompt "a 3D rendering of Rihanna in unreal engine" --sigma 12.0 \
+--seed=29 --n_iter=1500 --normratio=0.05
+
+# ninja bacon (last line are the changed params)
+CUDA_VISIBLE_DEVICES=2 python main.py --pe 0 --learning_rate=0.0005 --seed 123 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 4 --clipavg view --lr_decay 0.9 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person.obj --output_dir results/demo/people/ninja --prompt "a 3D rendering of a ninja in unreal engine." \
+--sigma 200.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.02 --camera_r=1.0 --depth=8 --n_iter=600 --geoloss 0 
+
+CUDA_VISIBLE_DEVICES=3 python main.py --pe 0 --learning_rate=0.0005 --seed 123 \
+--clamp tanh --normclamp tanh  --maxcrop 1.0 --frontview_std 4 --clipavg view --lr_decay 0.9 \
+--colordepth 2 --normdepth 2 --normmincrop 0.1 --normmaxcrop 0.4 \
+--clamp tanh --n_normaugs 4 --n_augs 1 \
+--obj_path data/source_meshes/person.obj --output_dir results/demo/people/ninja --prompt "a 3D rendering of a ninja in unreal engine." \
+--sigma 200.0 --standardize=0 --neural_style_field=BACON --mesh_normalizer_func=min_max --normratio=0.02 --camera_r=1.0 --depth=8 --n_iter=600 --geoloss 0 
+
+
+
+
+
+
+
+
+
+
+
+--background_image_mode=white --camera_r=2.00 --clipavg=view \
+--divers_batch_aug=1 --geoloss=0 --symmetry=1 --n_augs=1 --n_normaugs=4 \
+ --lr_decay=0.9 --maxcrop=1 --mesh_normalizer_func=min_max \
+--normmaxcrop=0.4 --normmincrop=0.1 --normratio=0.01 --obj_path=data/source_meshes/person.obj \
+--output_dir=results/demo/person/output\
+--neural_style_field=NeuralStyleField--colordepth=2 --normdepth=2 --depth=4 --width=512 --sigma=5 \
+--frontview_elev_std=1 --frontview_std=4 --model_name=RN101 --n_views=8 \
+--ensemble_prompt "A realistic photo of Iron Man standing in full suit and helmet." "A realistic 3D rendering of Iron Man, Unreal Engine." \
+"A 3D rendering of Iron Man wearing helmet, Unreal Engine." --no_prompt=1
+
+
+
+
+
+
+
+
+
+CUDA_VISIBLE_DEVICES=1 python main.py --background_image_mode=white --camera_r=1.01 --clipavg=view \
+--divers_batch_aug=1 --geoloss=0 --standardize=0 --symmetry=1 --n_augs=1 --n_normaugs=4 \
+--learning_rate=0.0004 --lr_decay=0.9 --maxcrop=1 --mesh_normalizer_func=min_max \
+--normmaxcrop=0.15 --normmincrop=0.025 --normratio=0.001 --obj_path=data/source_meshes/person.obj \
+--output_dir=results/demo/person/output --seed=51342 \
+--neural_style_field=BACON --n_iter=800 --colordepth=4 --normdepth=4 --depth=8 --width=1024 --sigma=224 \
+--frontview_elev_std=1 --frontview_std=8 --model_name=RN101 --n_views=8 \
+--ensemble_prompt "A realistic photo of Iron Man standing in full suit and helmet." "A realistic 3D rendering of Iron Man, Unreal Engine." \
+"A 3D rendering of Iron Man wearing helmet, Unreal Engine." --no_prompt=1
+
+
+
+
+
+
+
+
+--prompt="A realistic 3D rendering of Iron Man wearing helmet, Unreal Engine."
+
+
+
+
+
+"A realistic photo of Iron Man standing." "A realistic 3D rendering of Iron Man."

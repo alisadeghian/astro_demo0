@@ -1,0 +1,111 @@
+program: main.py
+name: chair_factory_sweep
+project: chair_factory
+description: Generating chairs using normal-BACON and ensembel CLIP
+method: grid #random
+# early_terminate: 
+#   type: hyperband
+#   min_iter: 150
+metric:
+  name: eval_clip_loss2_view
+  goal: minimize
+parameters:
+  obj_path: 
+    values: [data/brute_force_no_culling_rotated/chair1_1b05971a4373c7d2463600025db2266.obj,
+             data/brute_force_no_culling_rotated/chair2_155dfcdcc387b025492d9da2668ec34c.obj,
+             data/brute_force_no_culling_rotated/chair3_111720e8cd4c613492d9da2668ec34c.obj]
+  prompt: 
+    values: [ 
+            "A 3D rendering of a wooden chair in Unreal Engine.",
+            "A 3D rendering of a stained glass chair in Unreal Engine.",
+            "A 3D rendering of a crochet chair in Unreal Engine.", 
+            "A 3D rendering of a golden chair in Unreal Engine.", 
+            "A 3D rendering of a green and yellow chair in Unreal Engine.",
+            "A 3D rendering of Snoop Dogg's chair in Unreal Engine.", 
+            "A 3D rendering of Super Mario's chair in Unreal Engine.",
+            "A 3D rendering of Batman's chair in Unreal Engine.",
+            "A 3D rendering of a roman's chair in Unreal Engine.",
+            "A 3D rendering of a military chair in Unreal Engine.", 
+            "A 3D rendering of a sport chair in Unreal Engine.",
+            "A 3D rendering of Adidas chair in Unreal Engine.",
+            "A 3D rendering of Louis Vuitton chair in Unreal Engine.", 
+            "A 3D rendering of Nike chair in Unreal Engine.", 
+            "A 3D rendering of Gucci chair in Unreal Engine.",
+            "A 3D rendering of Lacoste chair in Unreal Engine."]
+  output_dir: 
+    value: obj_factory/lamp/outputs
+  n_iter: 
+    value: 500
+  n_augs:
+    value: 1
+  n_normaugs:
+    value: 4
+  clipavg: 
+    value: 'view'
+  geoloss: 
+    values: [0]
+  lr_decay: 
+    values: [0.85]
+  learning_rate:
+    values: [0.0005]
+  normratio:
+    values: [0.002]
+  seed:
+    values: [2022]
+  pe: 
+    value: 0
+  frontview_std:  # 4.0
+    values: [4.0]
+  frontview_elev_std: 
+    values: [1.0]
+  normmincrop:
+    value: 0.1
+  normmaxcrop: 
+    values: [0.4]
+  standardize: 
+    value: 0
+  model_name:
+    values: ['RN50x4:0,ViT-B/32:0'] # ViT-B/16
+  coeff_models_deviate:
+    values: [0.3]
+  divers_batch_aug:
+    values: [0]
+  symmetry:
+    value: 1
+  maxcrop:
+    value: 1.0
+  normdepth:
+    values: [2]
+  colordepth:
+    values: [2]
+  camera_r:
+    value: 1.0
+  mesh_normalizer_func:
+    value: 'min_max'
+  neural_style_field:
+    values: [BACON]
+  depth:
+    values: [8]
+  width:
+    values: [256] # 512
+  sigma:
+    values: [256] # 224
+  n_views:
+    values: [8] 
+  # background_image_mode:
+    # values: ['change_per_iter']
+  background_based_prompt:
+    values: [0]
+  # renderer_shape:
+  #   values: [384]
+  log_interval:
+    value: 100
+
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - ${args}
+  - --frontview_center
+  - 1.57
+  - 0.1

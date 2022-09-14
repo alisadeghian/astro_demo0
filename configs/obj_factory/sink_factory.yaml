@@ -1,0 +1,101 @@
+program: main.py
+name: sink_factory_sweep
+project: sink_factory
+description: Generating sinks using normal-BACON and ensembel CLIP
+method: grid #random
+# early_terminate: 
+#   type: hyperband
+#   min_iter: 150
+metric:
+  name: eval_clip_loss2_view
+  goal: minimize
+parameters:
+  obj_path: 
+    values: [data/brute_force_no_culling_rotated/sink1_1fd3f0eb8e337ef7ac00fd1150223027.obj,
+             data/brute_force_no_culling_rotated/sink2_5c07f7040e822a42fdb729ff38860b34.obj,
+             data/brute_force_no_culling_rotated/sink3_99ffc34e3e5019c319620b61f6587b3e.obj]
+  prompt: 
+    values: ["A 3D rendering of a marbel sink in Unreal Engine.", "A 3D rendering of a luxury sink in Unreal Engine.", "A 3D rendering of a fancy sink in Unreal Engine.", 
+              "A 3D rendering of a wooden sink in Unreal Engine.", "A 3D rendering of a stained glass sink in Unreal Engine.", "A 3D rendering of a crochet sink in Unreal Engine.", 
+              "A 3D rendering of a golden sink in Unreal Engine.", "A 3D rendering of super mario's sink in Unreal Engine.", "A 3D rendering of a classic sink in Unreal Engine.", 
+              "A 3D rendering of a futuristic sink in Unreal Engine.", "A 3D rendering of a red and blue sink in Unreal Engine.", "A 3D rendering of a kitchen sink in Unreal Engine.", 
+              "A 3D rendering of a bathroom sink in Unreal Engine.", "A 3D rendering of a women's sink in Unreal Engine.", "A 3D rendering of a man's sink in Unreal Engine.", 
+              "A 3D rendering of a realistic sink in Unreal Engine.", "A 3D rendering of Adidas sink in Unreal Engine.", "A 3D rendering of Louis Vuitton sink in Unreal Engine.", 
+              "A 3D rendering of Nike sink in Unreal Engine.", ] ### HIGHLY ENCOURAGE TO ALWAYS ADD IN UNREAL ENGINE.
+  output_dir: 
+    value: obj_factory/sinks/outputs
+  n_iter: 
+    value: 500
+  n_augs:
+    value: 1
+  n_normaugs:
+    value: 4
+  clipavg: 
+    value: 'view'
+  geoloss: 
+    values: [0]
+  lr_decay: 
+    values: [0.90]
+  learning_rate:
+    values: [0.0005]
+  normratio:
+    values: [0.01]
+  seed:
+    values: [2022, 1990]
+  pe: 
+    value: 0
+  frontview_std: 
+    values: [1.0]
+  frontview_elev_std: 
+    values: [1.0]
+  normmincrop:
+    value: 0.1
+  normmaxcrop: 
+    values: [0.4]
+  standardize: 
+    value: 0
+  model_name:
+    values: ['ViT-B/32:0,RN50x16:0']
+  coeff_models_deviate:
+    values: [0.25]
+  divers_batch_aug:
+    values: [0]
+  symmetry:
+    value: 1
+  maxcrop:
+    value: 1.0
+  normdepth:
+    values: [2]
+  colordepth:
+    values: [2]
+  camera_r:
+    value: 1.0
+  mesh_normalizer_func:
+    value: 'min_max'
+  neural_style_field:
+    values: [BACON]
+  depth:
+    values: [8]
+  width:
+    values: [256]
+  sigma:
+    values: [196] # 384/2 + 8 = 200
+  n_views:
+    values: [6] 
+  background_image_mode:
+    values: ['change_per_iter']
+  background_based_prompt:
+    values: [0]
+  # renderer_shape:
+  #   values: [384]
+  log_interval:
+    value: 50
+
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - ${args}
+  - --frontview_center
+  - 1.57
+  - 0.1

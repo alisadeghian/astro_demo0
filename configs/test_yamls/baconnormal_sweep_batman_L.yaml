@@ -1,0 +1,91 @@
+
+program: main.py
+name: baconnormal_batman_Lfactory
+project: baconnormal_batman_Lfactory
+description: Generating Batman using normal-BACON and large CLIP
+method: grid #random
+early_terminate: 
+  type: hyperband
+  min_iter: 600
+metric:
+  name: eval_clip_loss2_view
+  goal: minimize
+parameters:
+  obj_path: 
+    value: data/source_meshes/person.obj
+  prompt: 
+    values: ["A realistic 3D rendering of Batman.", "A realistic photo of Batman.", 
+              "A realistic 3D rendering of Batman standing.", "A realistic photo of Batman standing.", 
+              "A realistic 3D rendering of Batman walking.", "A realistic photo of Batman walking.",
+              "A realistic 3D rendering of Batman wearing his Batsuit.", "A realistic photo of Batman wearing his Batsuit.", 
+              "A 3D rendering of Batman standing in the dark.", "A photo of Batman standing in the dark",
+              "A 3D rendering of a man wearing Batman costume.", "A cool photo of a man wearing Batman costume.", 
+              "A man wearing Batman costume.", "A man posing with a Batman costume."] ### HIGHLY ENCOURAGE TO ALWAYS ADD IN UNREAL ENGINE.
+  output_dir: 
+    value: results/demo/person/output
+  n_iter: 
+    value: 300
+  n_augs:
+    value: 1
+  n_normaugs:
+    value: 4
+  clipavg: 
+    value: 'view'
+  geoloss: 
+    values: [0]
+  lr_decay: 
+    values: [0.90]
+  learning_rate:
+    values: [0.0005, 0.0002]
+  normratio:
+    values: [0.04, 0.02, 0.01, 0.005]
+  seed:
+    values: [2022, 1990, 1991]
+  pe: 
+    value: 0
+  frontview_std: 
+    values: [4.0, 30.0]
+  frontview_elev_std: 
+    values: [2.0, 6.0]
+  normmincrop:
+    value: 0.1
+  normmaxcrop: 
+    value: 0.4
+  standardize: 
+    value: 0
+  model_name:
+    values: ['RN50x16']
+  divers_batch_aug:
+    values: [0]
+  symmetry:
+    value: 1
+  maxcrop:
+    value: 1.0
+  normdepth:
+    values: [2]
+  colordepth:
+    values: [2]
+  camera_r:
+    value: 1.0
+  mesh_normalizer_func:
+    value: 'min_max'
+  neural_style_field:
+    values: [BACON]
+  depth:
+    values: [6, 8]
+  width:
+    values: [256, 512]
+  sigma:
+    values: [112, 200, 350] # 384/2 + 8 = 200
+  n_views:
+    values: [10] # 10 significantly improves the performance of the model.
+  background_image_mode:
+    values: ['change_per_iter']
+  background_based_prompt:
+    values: [0, 1]
+  renderer_shape:
+    values: [0, 384]
+
+
+# Increase n_views to 16? (10 is 29493MiB memory)
+# Use smaller CLIP? 'RN50x4'

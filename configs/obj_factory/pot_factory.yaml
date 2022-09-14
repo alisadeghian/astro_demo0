@@ -1,0 +1,108 @@
+program: main.py
+name: teapot_factory_sweep
+project: teapot_factory
+description: Generating tea-pots using normal-BACON and ensembel CLIP
+method: grid #random
+# early_terminate: 
+#   type: hyperband
+#   min_iter: 150
+metric:
+  name: eval_clip_loss2_view
+  goal: minimize
+parameters:
+  obj_path: 
+    values: [data/brute_force_no_culling_rotated/pot1_1c25031eb41c95154212ff51b27f0221.obj,
+             data/brute_force_no_culling_rotated/pot2_5a471458da447600fea9cf313bd7758b.obj,
+             data/brute_force_no_culling_rotated/pot3_2e228ee528f0a7054212ff51b27f0221.obj]
+  prompt: 
+    values: ["A 3D rendering of a marbel tea pot in Unreal Engine.", "A 3D rendering of a luxury tea pot in Unreal Engine.", "A 3D rendering of a fancy tea pot in Unreal Engine.", 
+              "A 3D rendering of a wooden tea pot in Unreal Engine.", "A 3D rendering of a stained glass tea pot in Unreal Engine.", "A 3D rendering of a crochet tea pot in Unreal Engine.", 
+              "A 3D rendering of a golden tea pot in Unreal Engine.", "A 3D rendering of a classic tea pot in Unreal Engine.", "A 3D rendering of a futuristic tea pot in Unreal Engine.", 
+              "A 3D rendering of a red and blue pot in Unreal Engine.", "A 3D rendering of a green and yellow tea pot in Unreal Engine.", "A 3D rendering of Snoop Dogg's tea pot in Unreal Engine.", 
+              "A 3D rendering of Super Mario's tea pot in Unreal Engine.", "A 3D rendering of a Roman tea pot in Unreal Engine.", "A 3D rendering of an Aztec tea pot in Unreal Engine.", 
+              "A 3D rendering of a Persian tea pot in Unreal Engine.", "A 3D rendering of an American tea pot in Unreal Engine.", "A 3D rendering of a Chinesea military tea pot in Unreal Engine.", 
+              "A 3D rendering of Louis Vuitton tea pot in Unreal Engine.", "A 3D rendering of Gucci tea pot in Unreal Engine.", "A 3D rendering of Lacoste tea pot in Unreal Engine.", 
+              "A wooden tea pot.", "A stained glass tea pot.", "A crochet tea pot.", "A golden tea pot.", 
+              "A futuristic tea pot.", "A red and blue tea pot.", "A green and yellow tea pot.", 
+              "Snoop dogg's tea pot.", "Super mario's tea pot.", "A women's tea pot.", 
+              "A man's tea pot.", "A roman tea pot.", "An aztec tea pot.", "A persian tea pot.", 
+              "An american tea pot.", "A chinesea military tea pot.", "A sport tea pot.", "Adidas tea pot.", 
+              "Louis vuitton tea pot.", "Nike tea pot.", "Gucci tea pot.", "Lacoste tea pot.",
+              "Super Mario", "Roman", "Persian", "Chinese", "Aztech", "Nike", "Adidas", "Gucci", "Lacoste", "Army", "Military"] ### HIGHLY ENCOURAGE TO ALWAYS ADD IN UNREAL ENGINE.
+  output_dir: 
+    value: obj_factory/pot/outputs
+  n_iter: 
+    value: 500
+  n_augs:
+    value: 1
+  n_normaugs:
+    value: 4
+  clipavg: 
+    value: 'view'
+  geoloss: 
+    values: [0]
+  lr_decay: 
+    values: [0.85]
+  learning_rate:
+    values: [0.0005]
+  normratio:
+    values: [0.003] # 0.002
+  seed:
+    values: [2022, 1990]
+  pe: 
+    value: 0
+  frontview_std:  # 4.0
+    values: [4.0]
+  frontview_elev_std: 
+    values: [1.0]
+  normmincrop:
+    value: 0.1
+  normmaxcrop: 
+    values: [0.4]
+  standardize: 
+    value: 0
+  model_name:
+    values: ['ViT-B/32:0,RN50x16:0'] # ViT-B/16
+  coeff_models_deviate:
+    values: [0.3]
+  divers_batch_aug:
+    values: [0]
+  symmetry:
+    value: 1
+  maxcrop:
+    value: 1.0
+  normdepth:
+    values: [2]
+  colordepth:
+    values: [2]
+  camera_r:
+    value: 1.0
+  mesh_normalizer_func:
+    value: 'min_max'
+  neural_style_field:
+    values: [BACON]
+  depth:
+    values: [8]
+  width:
+    values: [384] # 512
+  sigma:
+    values: [224] # 224
+  n_views:
+    values: [5] 
+  background_image_mode:
+    values: ['change_per_iter']
+  background_based_prompt:
+    values: [0]
+  # renderer_shape:
+  #   values: [384]
+  log_interval:
+    value: 100
+
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - ${args}
+  - --frontview_center
+  - 1.57
+  - 0.1

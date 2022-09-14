@@ -1,0 +1,68 @@
+program: main.py
+name: fixed_roman
+description: testing how wandb sweep works
+method: bayes
+early_terminate: 
+  type: hyperband
+  min_iter: 800
+metric:
+  name: eval_clip_loss
+  goal: minimize
+parameters:
+  obj_path: 
+    value: data/source_meshes/person.obj
+  prompt: 
+    value: "a 3D rendering of a Roman soldier on a white background"
+  output_dir: 
+    value: results/sweeps/roman_sweep
+  n_iter: 
+    value: 2000
+  n_augs:
+    min: 0
+    max: 4
+  n_normaugs:
+    min: 0
+    max: 4
+  frontview:
+    value: True
+  clipavg: 
+    distribution: categorical
+    values: ['view', None]
+  geoloss: 
+    distribution: categorical
+    values: [1, 0]
+  lr_decay: 
+    value: 0.9
+  learning_rate:
+    min: 0.0001
+    max: 0.001
+  normratio:
+    min: 0.01
+    max: 0.2
+  seed:
+    distribution: categorical
+    values: [29134, 182187, 366119, 29]
+  pe: 
+    values: [1, 0]
+  sigma: 
+    min: 0.01
+    max: 24.0
+  frontview_std: 
+    min: 1
+    max: 100
+  normmincrop:
+    min: 0.1
+    max: 0.8
+  normmaxcrop: 
+    min: 0.5
+    max: 1.0
+  standardize: 
+    distribution: categorical
+    values: [1, 0]
+  model_name:
+    distribution: categorical
+    values: ['RN50x4', 'ViT-B/32']
+  divers_batch_aug:
+    distribution: categorical
+    values: [1, 0]
+    # probabilities: [0.7, 0.3]

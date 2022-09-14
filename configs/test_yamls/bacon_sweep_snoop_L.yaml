@@ -1,0 +1,77 @@
+
+program: main.py
+name: bacon_snoop_Lfacotry
+project: bacon_snoop_Lfacotry
+description: generating Snoop Dogg using BACON and large CLIP
+method: grid #random
+early_terminate: 
+  type: hyperband
+  min_iter: 600
+metric:
+  name: eval_clip_loss2_view
+  goal: minimize
+parameters:
+  obj_path: 
+    value: data/source_meshes/person.obj
+  prompt: 
+    values:  ["a picture of Snoop Dogg wearing a purple shirt and golden shoes.", "a photo of Snoop Dogg wearing a black shirt and a golden belt."]
+  output_dir: 
+    value: results/demo/person/output
+  n_iter: 
+    value: 2000
+  n_augs:
+    value: 1
+  n_normaugs:
+    value: 4
+  clipavg: 
+    value: 'view'
+  geoloss: 
+    values: [0]
+  lr_decay: 
+    values: [1.0]
+  learning_rate:
+    values: [0.0003]
+  normratio:
+    values: [0.01, 0.004]
+  seed:
+    values: [2022, 1990]
+  pe: 
+    value: 0
+  frontview_std: 
+    values: [4.0]
+  frontview_elev_std: 
+    values: [1.0, 5.0]
+  normmincrop:
+    value: 0.1
+  normmaxcrop: 
+    value: 0.4
+  standardize: 
+    value: 0
+  model_name:
+    values: ['RN50x16']
+  divers_batch_aug:
+    values: [1]
+  symmetry:
+    value: 1
+  maxcrop:
+    value: 1.0
+  normdepth:
+    values: [3]
+  colordepth:
+    values: [3]
+  camera_r:
+    value: 1.0
+  mesh_normalizer_func:
+    value: 'min_max'
+  neural_style_field:
+    value: MultiscaleBACON
+  depth:
+    values: [6]
+  width:
+    values: [256]
+  sigma:
+    values: [768, 384]
+  n_views:
+    values: [5] # 10 significantly improves the performance of the model.
+  background_image_mode:
+    values: ['change_per_iter']

@@ -1,0 +1,108 @@
+program: main.py
+name: lamp_factory_sweep
+project: lamp_factory
+description: Generating lamps using normal-BACON and ensembel CLIP
+method: grid #random
+# early_terminate: 
+#   type: hyperband
+#   min_iter: 150
+metric:
+  name: eval_clip_loss2_view
+  goal: minimize
+parameters:
+  obj_path: 
+    values: [data/brute_force_no_culling_rotated/lamp1_18d91829adf1574ecf004563556ddb36.obj,
+              data/brute_force_no_culling_rotated/lamp2_127aff49c9378499ae685ca100c909e8.obj,
+              data/brute_force_no_culling_rotated/lamp3_18145f4b303c37f11c3739edd52fa3.obj]
+  prompt: 
+    values: ["A 3D rendering of a marbel lamp in Unreal Engine.", "A 3D rendering of a luxury lamp in Unreal Engine.", "A 3D rendering of a fancy lamp in Unreal Engine.", 
+              "A 3D rendering of a wooden lamp in Unreal Engine.", "A 3D rendering of a stained glass lamp in Unreal Engine.", "A 3D rendering of a crochet lamp in Unreal Engine.", 
+              "A 3D rendering of a golden lamp in Unreal Engine.", "A 3D rendering of a classic lamp in Unreal Engine.", "A 3D rendering of a futuristic lamp in Unreal Engine.", 
+              "A 3D rendering of a red and blue lamp in Unreal Engine.", "A 3D rendering of a green and yellow lamp in Unreal Engine.", "A 3D rendering of Snoop Dogg's lamp in Unreal Engine.", 
+              "A 3D rendering of Super Mario's lamp in Unreal Engine.", "A 3D rendering of Batman's lamp in Unreal Engine.", "A 3D rendering of a women's lamp in Unreal Engine.", 
+              "A 3D rendering of a man's lamp in Unreal Engine.", "A 3D rendering of a roman's lamp in Unreal Engine.", "A 3D rendering of a military lamp in Unreal Engine.", 
+              "A 3D rendering of Adidas lamp in Unreal Engine.", "A 3D rendering of Louis Vuitton lamp in Unreal Engine.", "A 3D rendering of Nike lamp in Unreal Engine.", 
+              "A 3D rendering of Gucci lamp in Unreal Engine.", "A 3D rendering of Lacoste lamp in Unreal Engine.", "A marbel lamp.", "A luxury lamp.", "A fancy lamp.", 
+              "A wooden lamp.", "A stained glass lamp.", "A crochet lamp.", "A golden lamp.", 
+              "A classic lamp.", "A futuristic lamp.", "A red and blue lamp.", "A green and yellow lamp.", 
+              "Snoop dogg's lamp.", "Super mario's lamp.", "Batman's lamp.", "A women's lamp.", 
+              "A man's lamp.", "A roman's lamp.", "A military lamp.", "Adidas lamp.", 
+              "Louis vuitton lamp.", "Nike lamp.", "Gucci lamp.", "Lacoste lamp.",
+              "Super Mario", "Snoop Dogg", "roman", "Nike", "Adidas", "Gucci", "Lacoste", "Army", "Military"] ### HIGHLY ENCOURAGE TO ALWAYS ADD IN UNREAL ENGINE.
+  output_dir: 
+    value: obj_factory/lamp/outputs
+  n_iter: 
+    value: 500
+  n_augs:
+    value: 1
+  n_normaugs:
+    value: 4
+  clipavg: 
+    value: 'view'
+  geoloss: 
+    values: [0]
+  lr_decay: 
+    values: [0.85]
+  learning_rate:
+    values: [0.0005]
+  normratio:
+    values: [0.003] # 0.002
+  seed:
+    values: [2022, 1990]
+  pe: 
+    value: 0
+  frontview_std:  # 4.0
+    values: [4.0]
+  frontview_elev_std: 
+    values: [1.0]
+  normmincrop:
+    value: 0.1
+  normmaxcrop: 
+    values: [0.4]
+  standardize: 
+    value: 0
+  model_name:
+    values: ['ViT-B/32:0,RN50x16:0'] # ViT-B/16
+  coeff_models_deviate:
+    values: [0.3]
+  divers_batch_aug:
+    values: [0]
+  symmetry:
+    value: 1
+  maxcrop:
+    value: 1.0
+  normdepth:
+    values: [2]
+  colordepth:
+    values: [2]
+  camera_r:
+    value: 1.0
+  mesh_normalizer_func:
+    value: 'min_max'
+  neural_style_field:
+    values: [BACON]
+  depth:
+    values: [8]
+  width:
+    values: [384] # 512
+  sigma:
+    values: [224] # 224
+  n_views:
+    values: [5] 
+  background_image_mode:
+    values: ['change_per_iter']
+  background_based_prompt:
+    values: [0]
+  # renderer_shape:
+  #   values: [384]
+  log_interval:
+    value: 100
+
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - ${args}
+  - --frontview_center
+  - 1.57
+  - 0.1
